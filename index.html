@@ -6,99 +6,112 @@
   <title>Charlie Colella | Scientific Computing Portfolio</title>
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
+  <nav class="navbar">
+    <div class="nav-name">Charlie Colella</div>
+    <div class="nav-links">
+      <a href="#projects">Projects</a>
+      <a href="#about">About</a>
+      <a href="https://github.com/charliecolella1119-hub" target="_blank">GitHub</a>
+    </div>
+  </nav>
+
   <header class="hero">
-    <h1>Charlie Colella</h1>
-    <p>Chemistry Major | Computational Chemistry | Scientific Visualization</p>
+    <p class="eyebrow">Chemistry • Computational Science • Visualization</p>
+    <h1>Scientific Computing Portfolio</h1>
+    <p>
+      Projects exploring chemistry, physics, and numerical simulation through
+      C++, OpenGL, and interactive visualization.
+    </p>
     <a href="#projects" class="button">View Projects</a>
   </header>
 
-  <section id="projects" class="section">
-    <h2>Projects</h2>
+  <main>
+    <section id="projects" class="section">
+      <h2>Featured Project</h2>
 
-    <div class="project-card">
-      <h3>Hydrogen Quantum Simulator</h3>
-      <p>
-        A real-time C++ and OpenGL visualization of hydrogen atom wavefunctions,
-        using quantum numbers, particle rendering, volume ray marching, and
-        slicing/clipping tools.
-      </p>
-      <a href="web-sim/index.html" target="_blank">
-        Open Browser Demo
-      </a>
+      <article class="project-card">
+        <div class="project-text">
+          <h3>Hydrogen Quantum Simulator</h3>
 
-      <img
-        src="assets/screenshots/gold.png"
-        alt="Hydrogen Quantum Simulator"
-        class="project-image"
-        onclick="openModal()"
-      />
-
-      <div id="previewModal" class="modal">
-        <div class="modal-content">
-          <span class="close" onclick="closeModal()">&times;</span>
-
-          <img src="assets/screenshots/gold.png" alt="Hydrogen Simulator Preview">
-
-          <h2>Hydrogen Quantum Simulator</h2>
           <p>
-            Interactive C++/OpenGL simulator. A browser-based WebGL version is planned.
+            A real-time C++ and OpenGL visualization of hydrogen atom
+            wavefunctions using quantum numbers, particle rendering, volume ray
+            marching, and slicing/clipping tools.
           </p>
 
-          <a href="https://github.com/charliecolella1119-hub/HydrogenAtomSim" target="_blank">
-            View GitHub Repository
-          </a>
+          <div class="tags">
+            <span>C++</span>
+            <span>OpenGL</span>
+            <span>GLFW</span>
+            <span>ImGui</span>
+            <span>Quantum Mechanics</span>
+          </div>
+
+          <div class="button-row">
+            <a href="web-sim/index.html" target="_blank" class="button secondary">
+              Browser Demo
+            </a>
+
+            <a href="https://github.com/charliecolella1119-hub/HydrogenAtomSim" target="_blank" class="button">
+              GitHub Repository
+            </a>
+          </div>
         </div>
-      </div>
 
-      <script>
-      function openModal() {
-        document.getElementById("previewModal").style.display = "flex";
-      }
+        <img
+          src="assets/screenshots/gold.png"
+          alt="Hydrogen Quantum Simulator gold orbital visualization"
+          class="project-image"
+          onclick="openModal('assets/screenshots/gold.png')"
+        />
 
-      function closeModal() {
-        document.getElementById("previewModal").style.display = "none";
-      }
-      </script>
+        <div class="project-gallery">
+          <button onclick="openModal('assets/screenshots/gold.png')">
+            <img src="assets/screenshots/gold.png" alt="Gold color map" />
+            <span>Gold</span>
+          </button>
 
-      <div class="project-gallery">
-        <a href="assets/screenshots/gold.png" target="_blank">
-            <img src="assets/screenshots/gold.png" alt="Gold Color Map">
-        </a>
+          <button onclick="openModal('assets/screenshots/viridis.png')">
+            <img src="assets/screenshots/viridis.png" alt="Viridis color map" />
+            <span>Viridis</span>
+          </button>
 
-        <a href="assets/screenshots/viridis.png" target="_blank">
-            <img src="assets/screenshots/viridis.png" alt="Viridis Color Map">
-        </a>
+          <button onclick="openModal('assets/screenshots/heatmap.png')">
+            <img src="assets/screenshots/heatmap.png" alt="Heat map color map" />
+            <span>Heat Map</span>
+          </button>
+        </div>
+      </article>
+    </section>
 
-        <a href="assets/screenshots/heatmap.png" target="_blank">
-            <img src="assets/screenshots/heatmap.png" alt="Heat Map">
-        </a>
-      </div>
+    <section id="about" class="section about-section">
+      <h2>About</h2>
+      <p>
+        I am a chemistry major interested in computational chemistry,
+        scientific visualization, and using programming to model physical and
+        chemical systems.
+      </p>
+    </section>
+  </main>
 
-      <div class="tags">
-        <span>C++</span>
-        <span>OpenGL</span>
-        <span>GLFW</span>
-        <span>ImGui</span>
-        <span>Quantum Mechanics</span>
-        
-      </div>
-
-      <div class="links">
-        <a href="https://github.com/charliecolella1119-hub/HydrogenAtomSim" target="_blank">
-          GitHub
-        </a>
-      </div>
+  <div id="previewModal" class="modal" onclick="closeModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <button class="close" onclick="closeModal()">&times;</button>
+      <img id="modalImage" src="assets/screenshots/gold.png" alt="Expanded project preview" />
     </div>
-  </section>
+  </div>
 
-  <section class="section">
-    <h2>About</h2>
-    <p>
-      I am a chemistry major interested in computational chemistry, scientific
-      visualization, and using programming to model physical and chemical systems.
-    </p>
-  </section>
+  <script>
+    function openModal(imagePath) {
+      document.getElementById("modalImage").src = imagePath;
+      document.getElementById("previewModal").style.display = "flex";
+    }
+
+    function closeModal() {
+      document.getElementById("previewModal").style.display = "none";
+    }
+  </script>
 </body>
 </html>
-
