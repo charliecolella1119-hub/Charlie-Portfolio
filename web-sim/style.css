@@ -1,0 +1,56 @@
+body {
+  margin: 0;
+  overflow: hidden;
+  background: #080b10;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+#canvas {
+  display: block;
+  width: 100vw;
+  height: 100vh;
+}
+
+#controls {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  width: 250px;
+  padding: 18px;
+  background: rgba(15, 17, 23, 0.9);
+  border: 1px solid #2a2f3d;
+  border-radius: 12px;
+  z-index: 10;
+}
+
+#controls h2 {
+  margin-top: 0;
+  font-size: 1.1rem;
+}
+
+label {
+  display: block;
+  margin-top: 12px;
+}
+
+input {
+  width: 100%;
+}
+
+button {
+  margin-top: 16px;
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background: #38bdf8;
+  color: #020617;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+p {
+  color: #cbd5e1;
+  font-size: 0.85rem;
+}
