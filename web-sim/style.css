@@ -54,3 +54,30 @@ p {
   color: #cbd5e1;
   font-size: 0.85rem;
 }
+
+select {
+  width: 100%;
+  margin-top: 8px;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  background: #1f2937;
+  color: white;
+  font-weight: bold;
+}
+
+.back-button {
+  display: block;
+  margin-top: 16px;
+  padding: 10px;
+  text-align: center;
+  border-radius: 8px;
+  background: #263244;
+  color: #e2e8f0;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.back-button:hover {
+  background: #334155;
+}

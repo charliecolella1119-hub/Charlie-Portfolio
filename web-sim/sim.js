@@ -147,16 +147,39 @@ function getVisualScale(n) {
   return 0.25;
 }
 
-function colorMap(t) {
-  const low = new THREE.Color(1.0, 0.45, 0.05);
-  const mid = new THREE.Color(1.0, 0.75, 0.05);
-  const high = new THREE.Color(1.0, 1.0, 0.65);
+function mixColor(a, b, t) {
+  return a.clone().lerp(b, t);
+}
 
-  if (t < 0.6) {
-    return low.clone().lerp(mid, t / 0.6);
+function colorMap(t) {
+  const mode = colorMapSelect.value;
+
+  let low, mid, high;
+
+  if (mode === "gold") {
+    low = new THREE.Color(0.75, 0.32, 0.02);
+    mid = new THREE.Color(1.00, 0.62, 0.05);
+    high = new THREE.Color(1.00, 0.95, 0.45);
+    scene.background = new THREE.Color(0xf0f2f0);
+  }
+  else if (mode === "viridis") {
+    low = new THREE.Color(0.02, 0.22, 0.16);
+    mid = new THREE.Color(0.00, 0.62, 0.36);
+    high = new THREE.Color(0.72, 0.95, 0.40);
+    scene.background = new THREE.Color(0xf0f2f0);
+  }
+  else {
+    low = new THREE.Color(0.28, 0.02, 0.35);
+    mid = new THREE.Color(0.95, 0.08, 0.65);
+    high = new THREE.Color(1.00, 0.65, 0.30);
+    scene.background = new THREE.Color(0x080b10);
   }
 
-  return mid.clone().lerp(high, (t - 0.6) / 0.4);
+  if (t < 0.6) {
+    return mixColor(low, mid, t / 0.6);
+  }
+
+  return mixColor(mid, high, (t - 0.6) / 0.4);
 }
 
 function generateOrbital(n, l, m) {
@@ -166,7 +189,7 @@ function generateOrbital(n, l, m) {
     orbitalPoints.material.dispose();
   }
 
-  const count = 60000;
+  const count = 140000;
   const maxRadius = getMaxRadius(n);
   const visualScale = getVisualScale(n);
   const maxProbability = 100.0;
@@ -194,8 +217,8 @@ function generateOrbital(n, l, m) {
     if (Math.random() * maxProbability < probability) {
       let density = probability / maxProbability;
       density = Math.min(Math.max(density, 0), 1);
-      density = Math.pow(density, 0.35);
-      density = Math.max(density, 0.35);
+      density = Math.pow(density, 0.22);
+      density = Math.max(density, 0.12);
 
       const c = colorMap(density);
 
@@ -217,11 +240,12 @@ function generateOrbital(n, l, m) {
   );
 
   const material = new THREE.PointsMaterial({
-    size: 0.035,
+    size: parseFloat(sizeSlider.value),
     vertexColors: true,
     transparent: true,
-    opacity: 0.85,
+    opacity: parseFloat(opacitySlider.value),
     depthWrite: false,
+    sizeAttenuation: true,
     blending: THREE.NormalBlending
   });
 
@@ -267,6 +291,7 @@ function regenerateFromUI() {
   const opacitySlider = document.getElementById("opacitySlider");
   const sizeValue = document.getElementById("sizeValue");
   const opacityValue = document.getElementById("opacityValue");
+  const colorMapSelect = document.getElementById("colorMapSelect");
 
   generateOrbital(n, l, m);
   sizeSlider.addEventListener("input", () => {
@@ -282,6 +307,7 @@ function regenerateFromUI() {
       opacityValue.textContent = opacitySlider.value;
       }
     });
+  colorMapSelect.addEventListener("change", regenerateFromUI);
 }
 
 nSlider.addEventListener("input", updateSliderLimits);

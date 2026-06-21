@@ -20,11 +20,20 @@
 
     <button id="regenerate">Regenerate Orbital</button>
 
-    <label>Particle Size: <span id="sizeValue">0.035</span></label>
-    <input id="sizeSlider" type="range" min="0.01" max="0.08" step="0.005" value="0.035" />
+    <label>Particle Size: <span id="sizeValue">0.045</span></label>
+    <input id="sizeSlider" type="range" min="0.01" max="0.08" step="0.005" value="0.045" />
 
-    <label>Opacity: <span id="opacityValue">0.85</span></label>
-    <input id="opacitySlider" type="range" min="0.2" max="1.0" step="0.05" value="0.85" />
+    <label>Opacity: <span id="opacityValue">0.55</span></label>
+    <input id="opacitySlider" type="range" min="0.2" max="1.0" step="0.05" value="0.55" />
+
+    <label>Color Map</label>
+    <select id="colorMapSelect">
+        <option value="gold">Gold</option>
+        <option value="viridis">Viridis</option>
+        <option value="heatmap">Heat Map</option>
+    </select>
+
+<a href="../index.html" class="back-button">← Back to Portfolio</a>
 
     <p>
       Simplified browser-based hydrogen orbital viewer.
