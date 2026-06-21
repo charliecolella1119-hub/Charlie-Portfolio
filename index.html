@@ -23,6 +23,43 @@
         using quantum numbers, particle rendering, volume ray marching, and
         slicing/clipping tools.
       </p>
+      <a href="web-sim/index.html" target="_blank">
+        Open Browser Demo
+      </a>
+
+      <img
+        src="assets/screenshots/gold.png"
+        alt="Hydrogen Quantum Simulator"
+        class="project-image"
+        onclick="openModal()"
+      />
+
+      <div id="previewModal" class="modal">
+        <div class="modal-content">
+          <span class="close" onclick="closeModal()">&times;</span>
+
+          <img src="assets/screenshots/gold.png" alt="Hydrogen Simulator Preview">
+
+          <h2>Hydrogen Quantum Simulator</h2>
+          <p>
+            Interactive C++/OpenGL simulator. A browser-based WebGL version is planned.
+          </p>
+
+          <a href="https://github.com/charliecolella1119-hub/HydrogenAtomSim" target="_blank">
+            View GitHub Repository
+          </a>
+        </div>
+      </div>
+
+      <script>
+      function openModal() {
+        document.getElementById("previewModal").style.display = "flex";
+      }
+
+      function closeModal() {
+        document.getElementById("previewModal").style.display = "none";
+      }
+      </script>
 
       <div class="project-gallery">
         <a href="assets/screenshots/gold.png" target="_blank">
@@ -64,3 +101,4 @@
   </section>
 </body>
 </html>
+
