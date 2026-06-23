@@ -259,3 +259,33 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+.project-note {
+  color: #93c5fd;
+  font-weight: bold;
+}
+
+#contact a {
+  color: #38bdf8;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+#contact a:hover {
+  text-decoration: underline;
+}
+
+.project-grid {
+  display: grid;
+  gap: 28px;
+}
+
+.placeholder-card {
+  opacity: 0.85;
+  border-style: dashed;
+}
+
+.placeholder-card .tags {
+  margin-top: 20px;
+}
+
