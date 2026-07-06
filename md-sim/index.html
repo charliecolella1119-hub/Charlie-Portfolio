@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Molecular Dynamics Browser Demo</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <aside id="controls">
+    <h1>Molecular Dynamics Demo</h1>
+
+    <div class="stat-grid">
+      <div>
+        <span>Preset</span>
+        <strong id="presetName">Gas</strong>
+      </div>
+
+      <div>
+        <span>Temp</span>
+        <strong id="temperature">0.00</strong>
+      </div>
+
+      <div>
+        <span>Pressure</span>
+        <strong id="pressure">0.000</strong>
+      </div>
+
+      <div>
+        <span>Energy</span>
+        <strong id="energy">0.00</strong>
+      </div>
+    </div>
+
+    <label for="presetSelect">Experiment Preset</label>
+    <select id="presetSelect">
+      <option value="gas">Gas</option>
+      <option value="liquid">Liquid</option>
+      <option value="crystal">Crystal</option>
+      <option value="hot">Hot Gas</option>
+      <option value="dense">Dense Fluid</option>
+      <option value="melt">Melting Crystal</option>
+    </select>
+
+    <label for="graphSelect">Analysis Graph</label>
+    <select id="graphSelect">
+      <option value="temperature">Temperature History</option>
+      <option value="velocity">Velocity + MB Fit</option>
+      <option value="radial">Radial Distribution g(r)</option>
+      <option value="phase">Pressure vs Temp</option>
+    </select>
+
+    <div class="button-grid">
+      <button id="pauseButton">Pause</button>
+      <button id="resetButton">Reset</button>
+      <button id="heatButton">Heat</button>
+      <button id="coolButton">Cool</button>
+    </div>
+
+    <label class="toggle">
+      <input id="trailsToggle" type="checkbox" checked />
+      <span>Particle trails</span>
+    </label>
+
+    <canvas id="graphCanvas"></canvas>
+
+    <p>
+      Lennard-Jones particles with periodic boundaries and velocity Verlet
+      integration. The C++/SFML version includes CSV export and higher particle counts.
+    </p>
+
+    <a href="../index.html#molecular-dynamics" class="back-button">Back to Portfolio</a>
+  </aside>
+
+  <main>
+    <canvas id="simCanvas"></canvas>
+  </main>
+
+  <script src="sim.js"></script>
+</body>
+</html>

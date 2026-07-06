@@ -13,6 +13,7 @@
 
     <div class="nav-links">
       <a href="#projects">Projects</a>
+      <a href="#md-case-study">Case Study</a>
       <a href="#about">About</a>
       <a href="https://github.com/charliecolella1119-hub" target="_blank">GitHub</a>
     </div>
@@ -96,22 +97,113 @@
           </div>
         </article>
 
-        <article class="project-card placeholder-card">
-          <p class="eyebrow">Coming Soon</p>
+        <article id="molecular-dynamics" class="project-card featured-card">
+          <div class="project-text">
+            <p class="eyebrow">Classical Simulation</p>
 
-          <h3>Next Project</h3>
+            <h3>Molecular Dynamics Simulator</h3>
 
-          <p>
-            Currently planning the next scientific computing project focused on
-            computational chemistry, molecular simulation, or physical chemistry visualization.
-          </p>
+            <p>
+              A real-time C++ molecular dynamics simulator for Lennard-Jones particles,
+              featuring velocity Verlet integration, periodic boundaries, pressure and
+              energy tracking, Maxwell-Boltzmann velocity analysis, radial distribution
+              functions, and phase-space visualization.
+            </p>
 
-          <div class="tags">
-            <span>Computational Chemistry</span>
-            <span>Molecular Simulation</span>
-            <span>Physical Chemistry</span>
+            <p class="project-note">
+              Try the browser demo directly in the portfolio, or explore the full desktop C++/SFML application with CSV export on GitHub.
+            </p>
+
+            <div class="tags">
+              <span>C++</span>
+              <span>SFML</span>
+              <span>Molecular Dynamics</span>
+              <span>Statistical Mechanics</span>
+              <span>Scientific Visualization</span>
+              <span>CMake</span>
+            </div>
+
+            <div class="button-row">
+              <a href="md-sim/index.html" target="_blank" class="button secondary">
+                Browser Demo
+              </a>
+
+              <a href="#md-case-study" class="button secondary">
+                Technical Notes
+              </a>
+
+              <a href="https://github.com/charliecolella1119-hub/MolecularDynamicsSim" target="_blank" class="button">
+                GitHub Repository
+              </a>
+            </div>
+          </div>
+
+          <img
+            src="assets/screenshots/md-temperature.png"
+            alt="Molecular Dynamics Simulator showing gas particles and temperature history"
+            class="project-image contain-image"
+            loading="lazy"
+            onclick="openModal('assets/screenshots/md-temperature.png')"
+          />
+
+          <div class="project-gallery">
+            <button onclick="openModal('assets/screenshots/md-temperature.png')">
+              <img src="assets/screenshots/md-temperature.png" alt="Temperature history graph" loading="lazy" />
+              <span>Temperature</span>
+            </button>
+
+            <button onclick="openModal('assets/screenshots/md-radial-distribution.png')">
+              <img src="assets/screenshots/md-radial-distribution.png" alt="Radial distribution graph" loading="lazy" />
+              <span>g(r)</span>
+            </button>
+
+            <button onclick="openModal('assets/screenshots/md-velocity-distribution.png')">
+              <img src="assets/screenshots/md-velocity-distribution.png" alt="Velocity histogram with Maxwell-Boltzmann fit" loading="lazy" />
+              <span>Velocity Fit</span>
+            </button>
+
+            <button onclick="openModal('assets/screenshots/md-phase-diagram.png')">
+              <img src="assets/screenshots/md-phase-diagram.png" alt="Pressure-temperature phase diagram" loading="lazy" />
+              <span>Phase Plot</span>
+            </button>
           </div>
         </article>
+      </div>
+    </section>
+
+    <section id="md-case-study" class="section detail-section">
+      <p class="eyebrow">Project Case Study</p>
+
+      <h2>Molecular Dynamics Simulator</h2>
+
+      <div class="detail-grid">
+        <div>
+          <h3>Scientific Model</h3>
+
+          <p>
+            The simulator models Lennard-Jones particles with a short-range repulsive core
+            and longer-range attraction. Periodic boundaries and the minimum-image convention
+            make the simulation box behave like a small repeating material sample.
+          </p>
+        </div>
+
+        <div>
+          <h3>Numerical Method</h3>
+
+          <p>
+            Motion is integrated with velocity Verlet, a common molecular dynamics method
+            that keeps position and velocity updates stable enough for interactive energy,
+            pressure, and temperature inspection.
+          </p>
+        </div>
+
+        <div>
+          <h3>Analysis Tools</h3>
+
+          <p>
+            The browser demo lets visitors test the core simulation immediately. The full C++ app compares particle speeds to a Maxwell-Boltzmann distribution, computes a normalized radial distribution function, tracks pressure-temperature samples, and exports thermodynamic data to CSV.
+          </p>
+        </div>
       </div>
     </section>
 
@@ -122,11 +214,6 @@
         I am a chemistry major interested in computational chemistry,
         scientific visualization, and using programming to model physical and
         chemical systems.
-      </p>
-
-      <p>
-        My projects combine chemistry, physics, and programming to create
-        interactive simulations and visualizations of physical systems.
       </p>
     </section>
   </main>
