@@ -157,21 +157,27 @@ function colorMap(t) {
   let low, mid, high;
 
   if (mode === "gold") {
-    low = new THREE.Color(0.75, 0.32, 0.02);
-    mid = new THREE.Color(1.00, 0.62, 0.05);
-    high = new THREE.Color(1.00, 0.95, 0.45);
-    scene.background = new THREE.Color(0xf0f2f0);
+    low = new THREE.Color(0.86, 0.16, 0.01);
+    mid = new THREE.Color(1.00, 0.78, 0.04);
+    high = new THREE.Color(1.00, 0.99, 0.92);
+    scene.background = new THREE.Color(0x747672);
+  }
+  else if (mode === "violet") {
+    low = new THREE.Color(0.04, 0.02, 0.26);
+    mid = new THREE.Color(0.42, 0.08, 0.92);
+    high = new THREE.Color(0.70, 0.88, 1.00);
+    scene.background = new THREE.Color(0x080b10);
   }
   else if (mode === "viridis") {
     low = new THREE.Color(0.02, 0.22, 0.16);
     mid = new THREE.Color(0.00, 0.62, 0.36);
-    high = new THREE.Color(0.72, 0.95, 0.40);
-    scene.background = new THREE.Color(0xf0f2f0);
+    high = new THREE.Color(0.78, 1.00, 0.76);
+    scene.background = new THREE.Color(0x747672);
   }
   else {
-    low = new THREE.Color(0.28, 0.02, 0.35);
-    mid = new THREE.Color(0.95, 0.08, 0.65);
-    high = new THREE.Color(1.00, 0.65, 0.30);
+    low = new THREE.Color(0.02, 0.00, 0.18);
+    mid = new THREE.Color(1.00, 0.00, 0.95);
+    high = new THREE.Color(1.00, 0.96, 0.52);
     scene.background = new THREE.Color(0x080b10);
   }
 
