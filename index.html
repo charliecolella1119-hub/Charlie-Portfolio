@@ -13,27 +13,34 @@
 
     <div class="nav-links">
       <a href="#projects">Projects</a>
-      <a href="#md-case-study">Case Study</a>
+      <a href="web-sim/index.html">Hydrogen Demo</a>
       <a href="#about">About</a>
       <a href="https://github.com/charliecolella1119-hub" target="_blank">GitHub</a>
     </div>
   </nav>
 
   <header class="hero">
-    <p class="eyebrow">Chemistry • Computational Science • Visualization</p>
+    <div class="hero-content">
+      <p class="eyebrow">Chemistry • Scientific Computing • Visualization</p>
 
-    <h1>Scientific Computing Portfolio</h1>
+      <h1>Interactive simulations for quantum and molecular systems.</h1>
 
-    <p>
-      Projects exploring chemistry, physics, and numerical simulation through
-      C++, OpenGL, and interactive visualization.
-    </p>
+      <p>
+        I build visual tools that make physical models easier to explore:
+        hydrogen orbitals, particle systems, molecular dynamics, and real-time
+        rendering experiments.
+      </p>
 
-    <a href="#projects" class="button">View Projects</a>
+      <div class="button-row hero-actions">
+        <a href="web-sim/index.html" class="button">Launch Hydrogen Demo</a>
+        <a href="#projects" class="button secondary">View Projects</a>
+      </div>
+    </div>
   </header>
 
   <main>
     <section id="projects" class="section">
+      <p class="eyebrow">Selected Work</p>
       <h2>Projects</h2>
 
       <div class="project-grid">
@@ -44,17 +51,15 @@
             <h3>Hydrogen Quantum Simulator</h3>
 
             <p>
-              A real-time C++ and OpenGL visualization of hydrogen atom
-              wavefunctions with ray-traced particle rendering,
-              polished visual presets, volume ray marching, and slicing/clipping
-              tools.
+              A real-time hydrogen orbital visualizer with ray-traced particle
+              rendering, presentation-ready color presets, flowing probability
+              particles, and interactive slicing/clipping tools.
             </p>
 
             <p class="project-note">
-              Interactive browser demo available. The full C++/OpenGL version on
-              GitHub includes the enhanced renderer, HDR bloom, presentation
-              presets, flowing probability particles, and optimized particle
-              animation.
+              The browser demo is a lightweight WebGL version for quick
+              exploration. The full desktop simulator lives on GitHub and
+              includes the enhanced C++/OpenGL renderer.
             </p>
 
             <div class="tags">
@@ -67,37 +72,39 @@
 
             <div class="button-row">
               <a href="web-sim/index.html" target="_blank" class="button secondary">
-                Browser Demo
+                Open Browser Demo
               </a>
 
               <a href="https://github.com/charliecolella1119-hub/HydrogenAtomSim" target="_blank" class="button">
-                GitHub Repository
+                View Source
               </a>
             </div>
           </div>
 
-          <img
-            src="assets/screenshots/heatmap.png"
-            alt="Hydrogen Quantum Simulator heat map orbital visualization"
-            class="project-image"
-            onclick="openModal('assets/screenshots/heatmap.png')"
-          />
+          <div class="showcase">
+            <img
+              src="assets/screenshots/heatmap.png"
+              alt="Hydrogen Quantum Simulator heat map orbital visualization"
+              class="project-image"
+              onclick="openModal('assets/screenshots/heatmap.png')"
+            />
 
-          <div class="project-gallery">
-            <button onclick="openModal('assets/screenshots/gold.png')">
-              <img src="assets/screenshots/gold.png" alt="Gold color map" loading="lazy" />
-              <span>Gold</span>
-            </button>
+            <div class="project-gallery">
+              <button onclick="openModal('assets/screenshots/gold.png')">
+                <img src="assets/screenshots/gold.png" alt="Gold color map" loading="lazy" />
+                <span>Gold</span>
+              </button>
 
-            <button onclick="openModal('assets/screenshots/viridis.png')">
-              <img src="assets/screenshots/viridis.png" alt="Viridis color map" loading="lazy" />
-              <span>Viridis</span>
-            </button>
+              <button onclick="openModal('assets/screenshots/viridis.png')">
+                <img src="assets/screenshots/viridis.png" alt="Viridis color map" loading="lazy" />
+                <span>Viridis</span>
+              </button>
 
-            <button onclick="openModal('assets/screenshots/violet.png')">
-              <img src="assets/screenshots/violet.png" alt="Violet color map" loading="lazy" />
-              <span>Violet</span>
-            </button>
+              <button onclick="openModal('assets/screenshots/violet.png')">
+                <img src="assets/screenshots/violet.png" alt="Violet color map" loading="lazy" />
+                <span>Violet</span>
+              </button>
+            </div>
           </div>
         </article>
 
@@ -108,14 +115,15 @@
             <h3>Molecular Dynamics Simulator</h3>
 
             <p>
-              A real-time C++ molecular dynamics simulator for Lennard-Jones particles,
-              featuring velocity Verlet integration, periodic boundaries, pressure and
-              energy tracking, Maxwell-Boltzmann velocity analysis, radial distribution
-              functions, and phase-space visualization.
+              A Lennard-Jones particle simulator with velocity Verlet
+              integration, periodic boundaries, energy/pressure tracking,
+              velocity analysis, radial distribution functions, and phase-space
+              visualization.
             </p>
 
             <p class="project-note">
-              Try the browser demo directly in the portfolio, or explore the full desktop C++/SFML application with CSV export on GitHub.
+              Includes a browser demo for quick experimentation and a full
+              desktop C++/SFML application with CSV export on GitHub.
             </p>
 
             <div class="tags">
@@ -212,6 +220,7 @@
     </section>
 
     <section id="about" class="section about-section">
+      <p class="eyebrow">About</p>
       <h2>About</h2>
 
       <p>

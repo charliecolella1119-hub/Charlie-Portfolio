@@ -2,56 +2,99 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Hydrogen Orbital WebGL Demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hydrogen Orbital Browser Demo</title>
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
-  <div id="controls">
-    <h2>Hydrogen WebGL Demo</h2>
-
-    <label>n: <span id="nValue">4</span></label>
-    <input id="nSlider" type="range" min="1" max="5" value="4" />
-
-    <label>l: <span id="lValue">3</span></label>
-    <input id="lSlider" type="range" min="0" max="3" value="3" />
-
-    <label>m: <span id="mValue">0</span></label>
-    <input id="mSlider" type="range" min="-3" max="3" value="0" />
-
-    <button id="regenerate">Regenerate Orbital</button>
-
-    <label>Particle Size: <span id="sizeValue">0.045</span></label>
-    <input id="sizeSlider" type="range" min="0.01" max="0.08" step="0.005" value="0.045" />
-
-    <label>Opacity: <span id="opacityValue">0.55</span></label>
-    <input id="opacitySlider" type="range" min="0.2" max="1.0" step="0.05" value="0.55" />
-
-    <label>Color Map</label>
-    <select id="colorMapSelect">
-        <option value="gold">Gold</option>
-        <option value="violet">Violet</option>
-        <option value="viridis">Viridis</option>
-        <option value="heatmap">Heat Map</option>
-    </select>
-
-<a href="../index.html" class="back-button">← Back to Portfolio</a>
-
-    <p>
-      Simplified browser-based hydrogen orbital viewer inspired by the enhanced
-      C++/OpenGL simulator.
-    </p>
-  </div>
-
   <canvas id="canvas"></canvas>
+
+  <aside id="controls" aria-label="Hydrogen orbital controls">
+    <div class="panel-head">
+      <p class="eyebrow">WebGL Demo</p>
+      <h1>Hydrogen Orbital</h1>
+      <p class="panel-copy">
+        A streamlined browser version of the C++/OpenGL simulator.
+      </p>
+    </div>
+
+    <section class="control-group">
+      <div class="group-title">Look presets</div>
+
+      <div class="preset-grid">
+        <button class="preset active" data-preset="heatmap">Heat Map</button>
+        <button class="preset" data-preset="gold">Gold</button>
+        <button class="preset" data-preset="viridis">Viridis</button>
+        <button class="preset" data-preset="violet">Violet</button>
+      </div>
+    </section>
+
+    <section class="control-group">
+      <div class="group-title">Quantum state</div>
+
+      <label>
+        <span>n</span>
+        <strong id="nValue">4</strong>
+        <input id="nSlider" type="range" min="1" max="5" value="4" />
+      </label>
+
+      <label>
+        <span>l</span>
+        <strong id="lValue">3</strong>
+        <input id="lSlider" type="range" min="0" max="3" value="3" />
+      </label>
+
+      <label>
+        <span>m</span>
+        <strong id="mValue">0</strong>
+        <input id="mSlider" type="range" min="-3" max="3" value="0" />
+      </label>
+    </section>
+
+    <section class="control-group">
+      <div class="group-title">Particle style</div>
+
+      <label>
+        <span>Size</span>
+        <strong id="sizeValue">0.044</strong>
+        <input id="sizeSlider" type="range" min="0.012" max="0.085" step="0.002" value="0.044" />
+      </label>
+
+      <label>
+        <span>Opacity</span>
+        <strong id="opacityValue">0.62</strong>
+        <input id="opacitySlider" type="range" min="0.18" max="0.95" step="0.01" value="0.62" />
+      </label>
+
+      <label>
+        <span>Density</span>
+        <strong id="countValue">160k</strong>
+        <input id="countSlider" type="range" min="70000" max="220000" step="10000" value="160000" />
+      </label>
+    </section>
+
+    <div class="actions">
+      <button id="regenerate">Regenerate</button>
+      <button id="resetView" class="ghost">Reset View</button>
+    </div>
+
+    <div class="links">
+      <a href="../index.html">← Portfolio</a>
+      <a href="https://github.com/charliecolella1119-hub/HydrogenAtomSim" target="_blank">Full desktop source ↗</a>
+    </div>
+  </aside>
+
+  <div class="status" id="status">n=4 · l=3 · m=0 · 160k particles</div>
 
   <script type="importmap">
     {
-        "imports": {
+      "imports": {
         "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
         "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
-        }
+      }
     }
-    </script>
+  </script>
 
   <script type="module" src="sim.js"></script>
 </body>
