@@ -19,7 +19,7 @@ const opacityValue = document.getElementById("opacityValue");
 const countValue = document.getElementById("countValue");
 
 const scene = new THREE.Scene();
-scene.fog = new THREE.FogExp2(0x05070c, 0.035);
+scene.fog = null;
 
 const camera = new THREE.PerspectiveCamera(
   45,
@@ -37,6 +37,7 @@ const renderer = new THREE.WebGLRenderer({
 
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.outputColorSpace = THREE.SRGBColorSpace;
 
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
@@ -51,46 +52,46 @@ const PRESETS = {
   heatmap: {
     label: "Heat Map",
     background: 0x040406,
-    fog: 0x040406,
     cube: 0x6b7280,
-    size: 0.052,
-    opacity: 0.78,
-    count: 180000,
-    gamma: 0.24,
-    blending: THREE.AdditiveBlending
+    size: 0.058,
+    opacity: 0.86,
+    count: 200000,
+    gamma: 0.28,
+    floor: 0.12,
+    blending: THREE.NormalBlending
   },
   gold: {
     label: "Gold",
-    background: 0x747672,
-    fog: 0x747672,
+    background: 0x747770,
     cube: 0xe5e7eb,
-    size: 0.036,
-    opacity: 0.54,
-    count: 150000,
-    gamma: 0.18,
+    size: 0.050,
+    opacity: 0.82,
+    count: 190000,
+    gamma: 0.22,
+    floor: 0.12,
     blending: THREE.NormalBlending
   },
   viridis: {
     label: "Viridis",
-    background: 0x747672,
-    fog: 0x747672,
+    background: 0x747770,
     cube: 0xe5e7eb,
-    size: 0.034,
-    opacity: 0.56,
-    count: 150000,
-    gamma: 0.18,
+    size: 0.048,
+    opacity: 0.80,
+    count: 190000,
+    gamma: 0.22,
+    floor: 0.12,
     blending: THREE.NormalBlending
   },
   violet: {
     label: "Violet",
     background: 0x040406,
-    fog: 0x040406,
     cube: 0x64748b,
-    size: 0.038,
-    opacity: 0.50,
-    count: 150000,
-    gamma: 0.20,
-    blending: THREE.AdditiveBlending
+    size: 0.052,
+    opacity: 0.76,
+    count: 190000,
+    gamma: 0.22,
+    floor: 0.11,
+    blending: THREE.NormalBlending
   }
 };
 
@@ -109,8 +110,9 @@ function createParticleTexture() {
   const ctx = particleCanvas.getContext("2d");
   const gradient = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
   gradient.addColorStop(0.00, "rgba(255,255,255,1.0)");
-  gradient.addColorStop(0.36, "rgba(255,255,255,0.82)");
-  gradient.addColorStop(0.70, "rgba(255,255,255,0.22)");
+  gradient.addColorStop(0.38, "rgba(255,255,255,1.0)");
+  gradient.addColorStop(0.66, "rgba(255,255,255,0.55)");
+  gradient.addColorStop(0.86, "rgba(255,255,255,0.12)");
   gradient.addColorStop(1.00, "rgba(255,255,255,0.0)");
 
   ctx.fillStyle = gradient;
@@ -233,36 +235,36 @@ function multiStop(t, stops) {
 function colorMap(t) {
   if (activePresetName === "gold") {
     return multiStop(t, [
-      [0.00, new THREE.Color(0.95, 0.32, 0.03)],
-      [0.36, new THREE.Color(1.00, 0.58, 0.02)],
-      [0.70, new THREE.Color(1.00, 0.90, 0.04)],
-      [1.00, new THREE.Color(1.00, 0.99, 0.88)]
+      [0.00, new THREE.Color(0.96, 0.30, 0.00)],
+      [0.34, new THREE.Color(1.00, 0.52, 0.00)],
+      [0.66, new THREE.Color(1.00, 0.86, 0.00)],
+      [1.00, new THREE.Color(1.00, 0.94, 0.48)]
     ]);
   }
 
   if (activePresetName === "viridis") {
     return multiStop(t, [
-      [0.00, new THREE.Color(0.01, 0.28, 0.20)],
-      [0.48, new THREE.Color(0.00, 0.78, 0.45)],
-      [0.76, new THREE.Color(0.25, 1.00, 0.72)],
-      [1.00, new THREE.Color(0.92, 1.00, 0.82)]
+      [0.00, new THREE.Color(0.00, 0.34, 0.25)],
+      [0.44, new THREE.Color(0.00, 0.76, 0.43)],
+      [0.72, new THREE.Color(0.12, 1.00, 0.70)],
+      [1.00, new THREE.Color(0.48, 1.00, 0.68)]
     ]);
   }
 
   if (activePresetName === "violet") {
     return multiStop(t, [
-      [0.00, new THREE.Color(0.02, 0.02, 0.24)],
-      [0.40, new THREE.Color(0.26, 0.05, 0.88)],
-      [0.76, new THREE.Color(0.73, 0.16, 1.00)],
-      [1.00, new THREE.Color(0.78, 0.94, 1.00)]
+      [0.00, new THREE.Color(0.01, 0.02, 0.32)],
+      [0.38, new THREE.Color(0.22, 0.06, 0.98)],
+      [0.72, new THREE.Color(0.72, 0.10, 1.00)],
+      [1.00, new THREE.Color(0.50, 0.68, 1.00)]
     ]);
   }
 
   return multiStop(t, [
-    [0.00, new THREE.Color(0.02, 0.00, 0.16)],
-    [0.46, new THREE.Color(0.88, 0.00, 0.92)],
-    [0.74, new THREE.Color(1.00, 0.44, 0.05)],
-    [1.00, new THREE.Color(1.00, 0.98, 0.52)]
+    [0.00, new THREE.Color(0.03, 0.00, 0.22)],
+    [0.50, new THREE.Color(0.95, 0.00, 0.95)],
+    [0.78, new THREE.Color(1.00, 0.32, 0.03)],
+    [1.00, new THREE.Color(1.00, 0.94, 0.22)]
   ]);
 }
 
@@ -297,7 +299,6 @@ function applyPreset(name, regenerate = true) {
   activePresetName = name;
 
   scene.background = new THREE.Color(preset.background);
-  scene.fog.color = new THREE.Color(preset.fog);
 
   sizeSlider.value = preset.size;
   opacitySlider.value = preset.opacity;
@@ -378,7 +379,7 @@ function generateOrbital(n, l, m) {
       let density = probability / maxProbability;
       density = Math.min(Math.max(density, 0), 1);
       density = Math.pow(density, preset.gamma);
-      density = Math.max(density, 0.10);
+      density = Math.max(density, preset.floor);
 
       const c = colorMap(density);
 
