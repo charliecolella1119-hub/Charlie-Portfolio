@@ -62,24 +62,24 @@ const PRESETS = {
   },
   gold: {
     label: "Gold",
-    background: 0x747770,
+    background: 0x5f625c,
     cube: 0xe5e7eb,
-    size: 0.050,
-    opacity: 0.82,
+    size: 0.052,
+    opacity: 0.88,
     count: 190000,
-    gamma: 0.22,
-    floor: 0.12,
+    gamma: 0.52,
+    floor: 0.03,
     blending: THREE.NormalBlending
   },
   viridis: {
     label: "Viridis",
-    background: 0x747770,
+    background: 0x5f625c,
     cube: 0xe5e7eb,
-    size: 0.048,
-    opacity: 0.80,
+    size: 0.050,
+    opacity: 0.86,
     count: 190000,
-    gamma: 0.22,
-    floor: 0.12,
+    gamma: 0.52,
+    floor: 0.03,
     blending: THREE.NormalBlending
   },
   violet: {
@@ -235,19 +235,21 @@ function multiStop(t, stops) {
 function colorMap(t) {
   if (activePresetName === "gold") {
     return multiStop(t, [
-      [0.00, new THREE.Color(0.96, 0.30, 0.00)],
-      [0.34, new THREE.Color(1.00, 0.52, 0.00)],
-      [0.66, new THREE.Color(1.00, 0.86, 0.00)],
-      [1.00, new THREE.Color(1.00, 0.94, 0.48)]
+      [0.00, new THREE.Color(0.98, 0.26, 0.00)],
+      [0.46, new THREE.Color(1.00, 0.42, 0.00)],
+      [0.78, new THREE.Color(1.00, 0.76, 0.00)],
+      [0.94, new THREE.Color(1.00, 0.95, 0.20)],
+      [1.00, new THREE.Color(1.00, 1.00, 0.82)]
     ]);
   }
 
   if (activePresetName === "viridis") {
     return multiStop(t, [
-      [0.00, new THREE.Color(0.00, 0.34, 0.25)],
-      [0.44, new THREE.Color(0.00, 0.76, 0.43)],
-      [0.72, new THREE.Color(0.12, 1.00, 0.70)],
-      [1.00, new THREE.Color(0.48, 1.00, 0.68)]
+      [0.00, new THREE.Color(0.00, 0.28, 0.20)],
+      [0.46, new THREE.Color(0.00, 0.62, 0.30)],
+      [0.78, new THREE.Color(0.00, 0.92, 0.46)],
+      [0.94, new THREE.Color(0.20, 1.00, 0.50)],
+      [1.00, new THREE.Color(0.58, 1.00, 0.42)]
     ]);
   }
 
