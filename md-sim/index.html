@@ -9,7 +9,8 @@
 
 <body>
   <aside id="controls">
-    <h1>Molecular Dynamics Demo</h1>
+    <p class="eyebrow">Interactive browser experiment</p>
+    <h1>Molecular Dynamics Lab</h1>
 
     <div class="stat-grid">
       <div>
@@ -18,8 +19,13 @@
       </div>
 
       <div>
-        <span>Temp</span>
-        <strong id="temperature">0.00</strong>
+        <span>Temperature</span>
+        <strong id="temperature">0 K</strong>
+      </div>
+
+      <div>
+        <span>Target</span>
+        <strong id="targetReadout">450 K</strong>
       </div>
 
       <div>
@@ -30,6 +36,11 @@
       <div>
         <span>Energy</span>
         <strong id="energy">0.00</strong>
+      </div>
+
+      <div>
+        <span>Ensemble</span>
+        <strong id="ensembleReadout">NVT</strong>
       </div>
     </div>
 
@@ -43,6 +54,18 @@
       <option value="melt">Melting Crystal</option>
     </select>
 
+    <label for="ensembleSelect">Thermodynamic Ensemble</label>
+    <select id="ensembleSelect">
+      <option value="nvt">NVT · temperature controlled</option>
+      <option value="nve">NVE · isolated system</option>
+    </select>
+
+    <label for="targetSlider" class="range-label">
+      <span>Target Temperature</span>
+      <output id="targetOutput">450 K</output>
+    </label>
+    <input id="targetSlider" type="range" min="50" max="1000" step="1" value="450" />
+
     <label for="graphSelect">Analysis Graph</label>
     <select id="graphSelect">
       <option value="temperature">Temperature History</option>
@@ -54,8 +77,8 @@
     <div class="button-grid">
       <button id="pauseButton">Pause</button>
       <button id="resetButton">Reset</button>
-      <button id="heatButton">Heat</button>
-      <button id="coolButton">Cool</button>
+      <button id="heatButton">+25 K</button>
+      <button id="coolButton">−25 K</button>
     </div>
 
     <label class="toggle">
@@ -66,8 +89,10 @@
     <canvas id="graphCanvas"></canvas>
 
     <p>
-      Lennard-Jones particles with periodic boundaries and velocity Verlet
-      integration. The C++/SFML version includes CSV export and higher particle counts.
+      A streamlined 2D Lennard-Jones experiment with periodic boundaries,
+      velocity Verlet integration, and NVE/NVT ensemble controls. The desktop
+      C++/OpenGL project adds 3D water models, hard-sphere and hybrid physics,
+      richer analysis, and CSV export.
     </p>
 
     <a href="../index.html#molecular-dynamics" class="back-button">Back to Portfolio</a>

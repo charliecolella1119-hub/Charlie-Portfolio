@@ -115,20 +115,24 @@
             <h3>Molecular Dynamics Simulator</h3>
 
             <p>
-              A Lennard-Jones particle simulator with velocity Verlet
-              integration, periodic boundaries, energy/pressure tracking,
-              velocity analysis, radial distribution functions, and phase-space
-              visualization.
+              A real-time 3D molecular dynamics laboratory with atoms and
+              water models, selectable Lennard-Jones, hard-sphere, and hybrid
+              physics, temperature-controlled NVT experiments, isolated NVE
+              dynamics, and live statistical-mechanics analysis.
             </p>
 
             <p class="project-note">
-              Includes a browser demo for quick experimentation and a full
-              desktop C++/SFML application with CSV export on GitHub.
+              The browser lab offers an immediate 2D Lennard-Jones experiment.
+              The full C++/SFML/OpenGL application adds TIP3P-inspired water,
+              hydrogen-bond visualization, 3D camera controls, and CSV export.
             </p>
 
             <div class="tags">
               <span>C++</span>
               <span>SFML</span>
+              <span>OpenGL</span>
+              <span>NVE / NVT</span>
+              <span>TIP3P-style Water</span>
               <span>Molecular Dynamics</span>
               <span>Statistical Mechanics</span>
               <span>Scientific Visualization</span>
@@ -151,17 +155,17 @@
           </div>
 
           <img
-            src="assets/screenshots/md-temperature.png"
-            alt="Molecular Dynamics Simulator showing gas particles and temperature history"
+            src="assets/screenshots/md-nvt-water.png"
+            alt="Three-dimensional molecular dynamics simulator showing TIP3P-style water under NVT temperature control"
             class="project-image contain-image"
             loading="lazy"
-            onclick="openModal('assets/screenshots/md-temperature.png')"
+            onclick="openModal('assets/screenshots/md-nvt-water.png')"
           />
 
           <div class="project-gallery">
-            <button onclick="openModal('assets/screenshots/md-temperature.png')">
-              <img src="assets/screenshots/md-temperature.png" alt="Temperature history graph" loading="lazy" />
-              <span>Temperature</span>
+            <button onclick="openModal('assets/screenshots/md-nvt-water.png')">
+              <img src="assets/screenshots/md-nvt-water.png" alt="TIP3P-style water in the OpenGL 3D view" loading="lazy" />
+              <span>3D Water + NVT</span>
             </button>
 
             <button onclick="openModal('assets/screenshots/md-radial-distribution.png')">
@@ -193,9 +197,10 @@
           <h3>Scientific Model</h3>
 
           <p>
-            The simulator models Lennard-Jones particles with a short-range repulsive core
-            and longer-range attraction. Periodic boundaries and the minimum-image convention
-            make the simulation box behave like a small repeating material sample.
+            The desktop simulator supports atomic Lennard-Jones particles,
+            directional coarse-grained water, and a TIP3P-inspired three-site
+            model with oxygen Lennard-Jones interactions and partial charges.
+            Periodic boundaries make the box behave like a repeating sample.
           </p>
         </div>
 
@@ -203,9 +208,10 @@
           <h3>Numerical Method</h3>
 
           <p>
-            Motion is integrated with velocity Verlet, a common molecular dynamics method
-            that keeps position and velocity updates stable enough for interactive energy,
-            pressure, and temperature inspection.
+            Velocity Verlet advances the system in time. NVT experiments use a
+            weak Berendsen thermostat to approach a Kelvin-labeled target;
+            switching to NVE removes that coupling so energy can exchange
+            naturally between kinetic and potential forms.
           </p>
         </div>
 
@@ -213,7 +219,10 @@
           <h3>Analysis Tools</h3>
 
           <p>
-            The browser demo lets visitors test the core simulation immediately. The full C++ app compares particle speeds to a Maxwell-Boltzmann distribution, computes a normalized radial distribution function, tracks pressure-temperature samples, and exports thermodynamic data to CSV.
+            Live tools compare particle speeds with a Maxwell-Boltzmann curve,
+            compute the radial distribution function, track temperature and
+            pressure, and export thermodynamic time series. Regression tests
+            check force gradients, preset temperatures, and thermostat behavior.
           </p>
         </div>
       </div>

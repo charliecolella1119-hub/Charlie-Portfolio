@@ -5,6 +5,9 @@ const graphCtx = graphCanvas.getContext("2d");
 
 const presetSelect = document.getElementById("presetSelect");
 const graphSelect = document.getElementById("graphSelect");
+const ensembleSelect = document.getElementById("ensembleSelect");
+const targetSlider = document.getElementById("targetSlider");
+const targetOutput = document.getElementById("targetOutput");
 const pauseButton = document.getElementById("pauseButton");
 const resetButton = document.getElementById("resetButton");
 const heatButton = document.getElementById("heatButton");
@@ -13,6 +16,8 @@ const trailsToggle = document.getElementById("trailsToggle");
 
 const presetName = document.getElementById("presetName");
 const temperatureReadout = document.getElementById("temperature");
+const targetReadout = document.getElementById("targetReadout");
+const ensembleReadout = document.getElementById("ensembleReadout");
 const pressureReadout = document.getElementById("pressure");
 const energyReadout = document.getElementById("energy");
 
@@ -20,12 +25,15 @@ const BOX = { x: 0, y: 0, width: 1, height: 1 };
 const EPSILON = 0.55;
 const SIGMA = 0.04;
 const MASS = 1.0;
-const DT = 0.0012;
+const DT = 0.00035;
 const CUTOFF_RADIUS = 0.12;
-const REPULSION_CAP = 520;
+const REPULSION_CAP = 120;
 const ATTRACTION_CAP = 4;
-const MAX_SPEED = 0.22;
-const SUBSTEPS = 2;
+const MAX_SPEED = 3.0;
+const SUBSTEPS = 3;
+// Maps the browser model's reduced kinetic temperature to an intuitive Kelvin scale.
+const KELVIN_PER_REDUCED_TEMPERATURE = 500;
+const THERMOSTAT_COUPLING = 0.08;
 
 let particles = [];
 let paused = false;
@@ -35,6 +43,7 @@ let radialDistribution = [];
 let velocityHistogram = [];
 let time = 0;
 let frame = 0;
+let targetTemperature = 450;
 
 function resizeCanvas(canvas) {
   const rect = canvas.getBoundingClientRect();
@@ -67,12 +76,12 @@ function minimumImage(dx, dy) {
 
 function presetConfig(name) {
   const configs = {
-    gas: { label: "Gas", count: 100, speed: 0.035, layout: "grid" },
-    liquid: { label: "Liquid", count: 121, speed: 0.025, layout: "cluster" },
-    crystal: { label: "Crystal", count: 121, speed: 0.010, layout: "crystal" },
-    hot: { label: "Hot Gas", count: 100, speed: 0.070, layout: "grid" },
-    dense: { label: "Dense Fluid", count: 144, speed: 0.020, layout: "dense" },
-    melt: { label: "Melting Crystal", count: 121, speed: 0.040, layout: "crystal" }
+    gas: { label: "Gas", count: 100, targetK: 450, layout: "grid" },
+    liquid: { label: "Liquid", count: 121, targetK: 298, layout: "cluster" },
+    crystal: { label: "Crystal", count: 121, targetK: 120, layout: "crystal" },
+    hot: { label: "Hot Gas", count: 100, targetK: 900, layout: "grid" },
+    dense: { label: "Dense Fluid", count: 144, targetK: 325, layout: "dense" },
+    melt: { label: "Melting Crystal", count: 121, targetK: 273, layout: "crystal" }
   };
 
   return configs[name] || configs.gas;
@@ -82,6 +91,7 @@ function createParticles() {
   const config = presetConfig(presetSelect.value);
   particles = [];
   const side = Math.ceil(Math.sqrt(config.count));
+  const velocityRange = Math.sqrt(3 * config.targetK / KELVIN_PER_REDUCED_TEMPERATURE);
 
   for (let y = 0; y < side; y++) {
     for (let x = 0; x < side; x++) {
@@ -91,13 +101,13 @@ function createParticles() {
       let py = (y + 1) / (side + 1);
 
       if (config.layout === "cluster") {
-        px = 0.28 + (x + 1) * (0.44 / (side + 1));
-        py = 0.30 + (y + 1) * (0.40 / (side + 1));
+        px = 0.11 + (x + 1) * (0.78 / (side + 1));
+        py = 0.11 + (y + 1) * (0.78 / (side + 1));
       }
 
       if (config.layout === "dense") {
-        px = 0.20 + (x + 1) * (0.60 / (side + 1));
-        py = 0.20 + (y + 1) * (0.60 / (side + 1));
+        px = 0.11 + (x + 1) * (0.78 / (side + 1));
+        py = 0.11 + (y + 1) * (0.78 / (side + 1));
       }
 
       if (config.layout === "crystal") {
@@ -109,8 +119,8 @@ function createParticles() {
       particles.push({
         x: px,
         y: py,
-        vx: (Math.random() * 2 - 1) * config.speed,
-        vy: (Math.random() * 2 - 1) * config.speed,
+        vx: (Math.random() * 2 - 1) * velocityRange,
+        vy: (Math.random() * 2 - 1) * velocityRange,
         fx: 0,
         fy: 0,
         trail: [{ x: px, y: py }]
@@ -119,6 +129,7 @@ function createParticles() {
   }
 
   removeDrift();
+  setKineticTemperature(config.targetK);
   computeForces();
   temperatureHistory = [];
   phaseSamples = [];
@@ -127,6 +138,7 @@ function createParticles() {
   time = 0;
   frame = 0;
   presetName.textContent = config.label;
+  setTargetTemperature(config.targetK);
 }
 
 function removeDrift() {
@@ -164,7 +176,7 @@ function computeForces() {
         continue;
       }
 
-      r2 = Math.max(r2, 0.00055);
+      r2 = Math.max(r2, 0.0012);
 
       const invR2 = 1 / r2;
       const sigma2OverR2 = SIGMA * SIGMA * invR2;
@@ -228,6 +240,8 @@ function step() {
     time += DT;
   }
 
+  if (ensembleSelect.value === "nvt") applyThermostat();
+
   if (trailsToggle.checked && frame % 2 === 0) updateTrails();
 }
 
@@ -249,6 +263,36 @@ function scaleVelocities(factor) {
   }
 }
 
+function reducedTemperature() {
+  return particles.length ? kineticEnergy() / particles.length : 0;
+}
+
+function temperatureKelvin() {
+  return reducedTemperature() * KELVIN_PER_REDUCED_TEMPERATURE;
+}
+
+function setKineticTemperature(kelvin) {
+  const current = temperatureKelvin();
+  if (current > 0) scaleVelocities(Math.sqrt(kelvin / current));
+}
+
+function setTargetTemperature(kelvin) {
+  targetTemperature = Math.max(50, Math.min(1000, Math.round(kelvin)));
+  targetSlider.value = String(targetTemperature);
+  targetOutput.textContent = `${targetTemperature} K`;
+  targetReadout.textContent = `${targetTemperature} K`;
+}
+
+function applyThermostat() {
+  const current = temperatureKelvin();
+  if (current <= 0) return;
+  const scaleSquared = Math.max(
+    0.01,
+    1 + THERMOSTAT_COUPLING * (targetTemperature / current - 1)
+  );
+  scaleVelocities(Math.sqrt(scaleSquared));
+}
+
 function kineticEnergy() {
   let total = 0;
   for (const p of particles) {
@@ -262,9 +306,9 @@ function speed(p) {
 }
 
 function speedColor(v) {
-  if (v < 0.045) return "#16b7f5";
-  if (v < 0.090) return "#12f29a";
-  if (v < 0.150) return "#ffb020";
+  if (v < 0.7) return "#16b7f5";
+  if (v < 1.2) return "#12f29a";
+  if (v < 1.8) return "#ffb020";
   return "#ff5f6d";
 }
 
@@ -283,14 +327,15 @@ function updateAnalysis(temperature, pressure, totalEnergy) {
 
   velocityHistogram = computeVelocityHistogram();
 
-  temperatureReadout.textContent = temperature.toFixed(3);
+  temperatureReadout.textContent = `${temperature.toFixed(0)} K`;
+  ensembleReadout.textContent = ensembleSelect.value.toUpperCase();
   pressureReadout.textContent = pressure.toFixed(4);
   energyReadout.textContent = (totalEnergy / particles.length).toFixed(3);
 }
 
 function computeVelocityHistogram() {
   const bins = Array(28).fill(0);
-  const maxVelocity = 1.0;
+  const maxVelocity = 3.0;
 
   for (const p of particles) {
     const index = Math.floor((speed(p) / maxVelocity) * bins.length);
@@ -435,16 +480,17 @@ function drawBarGraph(values, color, title, referenceOne = false) {
   });
 }
 
-function drawVelocityGraph(temperature) {
+function drawVelocityGraph(temperatureKelvinValue) {
   drawBarGraph(velocityHistogram, "#22d3ee", "Velocity + Maxwell-Boltzmann Fit");
-  if (!velocityHistogram.length || temperature <= 0) return;
+  if (!velocityHistogram.length || temperatureKelvinValue <= 0) return;
 
   const width = graphCanvas.clientWidth;
   const height = graphCanvas.clientHeight;
   const pad = 26;
-  const maxVelocity = 1.0;
+  const maxVelocity = 3.0;
   const binWidth = maxVelocity / velocityHistogram.length;
   const total = velocityHistogram.reduce((a, b) => a + b, 0);
+  const temperature = temperatureKelvinValue / KELVIN_PER_REDUCED_TEMPERATURE;
   const fit = velocityHistogram.map((_, i) => {
     const v = (i + 0.5) * binWidth;
     const density = (MASS / temperature) * v * Math.exp(-(MASS * v * v) / (2 * temperature));
@@ -465,7 +511,7 @@ function drawVelocityGraph(temperature) {
 }
 
 function drawPhaseGraph() {
-  drawGraphBox("Pressure vs Temperature");
+  drawGraphBox("Reduced Pressure vs Temperature (K)");
   if (phaseSamples.length < 2) return;
   const width = graphCanvas.clientWidth;
   const height = graphCanvas.clientHeight;
@@ -485,7 +531,7 @@ function drawPhaseGraph() {
 
 function drawCurrentGraph(temperature) {
   if (graphSelect.value === "temperature") {
-    drawLineGraph(temperatureHistory, "#22d3ee", "Temperature History");
+    drawLineGraph(temperatureHistory, "#22d3ee", "Temperature History (K)");
   } else if (graphSelect.value === "velocity") {
     drawVelocityGraph(temperature);
   } else if (graphSelect.value === "radial") {
@@ -503,8 +549,9 @@ function animate() {
 
   const forceStats = computeForces();
   const kinetic = kineticEnergy();
-  const temperature = kinetic / particles.length;
-  const pressure = (particles.length * temperature + 0.5 * forceStats.virial) / particles.length;
+  const temperatureReduced = kinetic / particles.length;
+  const temperature = temperatureReduced * KELVIN_PER_REDUCED_TEMPERATURE;
+  const pressure = (particles.length * temperatureReduced + 0.5 * forceStats.virial) / particles.length;
   const totalEnergy = kinetic + forceStats.potential;
 
   updateAnalysis(temperature, pressure, totalEnergy);
@@ -515,12 +562,18 @@ function animate() {
 
 presetSelect.addEventListener("change", createParticles);
 resetButton.addEventListener("click", createParticles);
+ensembleSelect.addEventListener("change", () => {
+  ensembleReadout.textContent = ensembleSelect.value.toUpperCase();
+});
+targetSlider.addEventListener("input", () => {
+  setTargetTemperature(Number(targetSlider.value));
+});
 pauseButton.addEventListener("click", () => {
   paused = !paused;
   pauseButton.textContent = paused ? "Resume" : "Pause";
 });
-heatButton.addEventListener("click", () => scaleVelocities(1.06));
-coolButton.addEventListener("click", () => scaleVelocities(0.90));
+heatButton.addEventListener("click", () => setTargetTemperature(targetTemperature + 25));
+coolButton.addEventListener("click", () => setTargetTemperature(targetTemperature - 25));
 trailsToggle.addEventListener("change", () => {
   if (!trailsToggle.checked) {
     for (const p of particles) p.trail = [{ x: p.x, y: p.y }];
